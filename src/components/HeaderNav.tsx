@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useMst } from "../store";
 
 const HeaderNav = () => {
-  const { antiHeroStore } = useMst();
+  const { antiHeroStore, heroStore } = useMst();
 
   return (
     <nav className="sticky-top navbar navbar-expand-lg navbar-light bg-light mb-5">
@@ -29,16 +29,16 @@ const HeaderNav = () => {
         </ul>
 
         <span className="me-5" style={{ color: "purple" }}>
-          {/*Total heroes: {heroStore.totalHeroesAction}*/}
+          Total heroes: {heroStore.totalHeroesCount}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
           Total anti-heroes: {antiHeroStore.totalAntiHeroesCount}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
-          {/*Last Edited Hero: {heroStore.hero.firstName}*/}
+          Last Edited Hero: {heroStore.hero.firstName}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
-          {/*Last Edited AntiHero: {antiHeroStore.antiHero.firstName}*/}
+          Last Edited AntiHero: {antiHeroStore.antiHero.firstName}
         </span>
       </div>
     </nav>

@@ -18,7 +18,7 @@ const AntiHeroModel = types.model({
 export const AntiHeroStore = types
   .model({
     antiHeroes: types.array(AntiHeroModel),
-    antiHero: types.maybeNull(AntiHeroModel),
+    antiHero: types.maybe(AntiHeroModel),
     loading: types.boolean,
     error: types.string,
   })
@@ -54,15 +54,17 @@ export const AntiHeroStore = types
     }),
     putAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       try {
-        const data = (yield putAntiHeroAxios(antiHero)).data;
+        yield putAntiHeroAxios(antiHero);
+        const index = self.antiHeroes.findIndex((ah) => ah.id == antiHero.id);
+        self.antiHeroes[index] = antiHero;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
       }
     }),
-    setAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
-      // self.antiHero = antiHero;
-    }),
+    setAntiHeroAction: function (antiHero: AntiHeroType) {
+      self.antiHero = antiHero;
+    },
   }))
   .views((self) => ({
     get totalAntiHeroesCount() {

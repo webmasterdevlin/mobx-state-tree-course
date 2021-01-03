@@ -1,15 +1,35 @@
 import { useContext, createContext } from "react";
 import { types, Instance, onSnapshot } from "mobx-state-tree";
 import { AntiHeroStore } from "../features/antiHeroes/antiHeroStore";
+import { HeroStore } from "../features/heroes/heroStore";
 
 const RootModel = types.model({
   antiHeroStore: AntiHeroStore,
+  heroStore: HeroStore,
 });
 
 let initialState = RootModel.create({
   antiHeroStore: {
     antiHeroes: [],
-    antiHero: null,
+    antiHero: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      house: "",
+      knownAs: "",
+    },
+    loading: false,
+    error: "",
+  },
+  heroStore: {
+    heroes: [],
+    hero: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      house: "",
+      knownAs: "",
+    },
     loading: false,
     error: "",
   },
