@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { useMst } from "../store";
+import { useMst } from "store";
 
 /* observer converts components into reactive components*/
 const HeaderNav = observer(() => {
@@ -37,7 +37,7 @@ const HeaderNav = observer(() => {
           Total anti-heroes: {antiHeroStore.totalAntiHeroesCount}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
-          s Last Edited Hero: {heroStore.hero.firstName}
+          Last Edited Hero: {heroStore.hero.firstName}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
           Last Edited AntiHero: {antiHeroStore.antiHero.firstName}

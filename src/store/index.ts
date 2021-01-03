@@ -1,7 +1,7 @@
 import { useContext, createContext } from "react";
 import { types, Instance, onSnapshot } from "mobx-state-tree";
-import { AntiHeroStore } from "../features/antiHeroes/antiHeroStore";
-import { HeroStore } from "../features/heroes/heroStore";
+import { AntiHeroStore } from "features/antiHeroes/antiHeroStore";
+import { HeroStore } from "features/heroes/heroStore";
 import { basicInfo } from "./initialStates";
 
 const RootModel = types.model({

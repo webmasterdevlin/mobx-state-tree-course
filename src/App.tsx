@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 
-import Routes from "./routes";
+import Routes from "routes";
 import HeaderNav from "components/HeaderNav";
-import { Provider, rootStore } from "./store";
+import { Provider, rootStore } from "store";
 
 const App = () => (
   <Provider value={rootStore}>

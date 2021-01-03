@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useMst } from "../store";
-import FormSubmission from "../components/FormSubmission";
-import { HeroType } from "../features/heroes/heroType";
+import { useMst } from "store";
+import FormSubmission from "components/FormSubmission";
+import { HeroType } from "features/heroes/heroType";
 
 /* observer converts components into reactive components*/
 const HeroesPage = observer(() => {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
-import { HeroType } from "../features/heroes/heroType";
-import { AntiHeroType } from "../features/antiHeroes/antiHeroType";
+import { HeroType } from "features/heroes/heroType";
+import { AntiHeroType } from "features/antiHeroes/antiHeroType";
 
 type Props = {
   text: string;
