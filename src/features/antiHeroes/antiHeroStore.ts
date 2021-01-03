@@ -1,4 +1,10 @@
-import { types, flow, getSnapshot, destroy } from "mobx-state-tree";
+import {
+  types,
+  flow,
+  getSnapshot,
+  destroy,
+  applySnapshot,
+} from "mobx-state-tree";
 import {
   deleteAntiHeroAxios,
   getAntiHeroesAxios,
@@ -23,6 +29,12 @@ export const AntiHeroStore = types
     error: types.string,
   })
   .actions((self) => ({
+    /*non-async actions*/
+    setAntiHeroAction: function (antiHero: AntiHeroType) {
+      self.antiHero = { ...antiHero };
+    },
+    /*async actions*/
+    // pessimistic update
     getAntiHeroesAction: flow(function* () {
       self.loading = true;
       try {
@@ -33,14 +45,16 @@ export const AntiHeroStore = types
       }
       self.loading = false;
     }),
+    // optimistic update
     deleteAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       const previous = getSnapshot(self.antiHeroes);
-      destroy(antiHero); // optimistic update
+      destroy(antiHero);
       try {
         yield deleteAntiHeroAxios(antiHero.id);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
+        applySnapshot(self.antiHeroes, previous);
       }
     }),
     postAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
@@ -62,11 +76,9 @@ export const AntiHeroStore = types
         alert("Something happened. Please try again later.");
       }
     }),
-    setAntiHeroAction: function (antiHero: AntiHeroType) {
-      self.antiHero = antiHero;
-    },
   }))
   .views((self) => ({
+    /*computed or derived values*/
     get totalAntiHeroesCount() {
       return self.antiHeroes.length;
     },

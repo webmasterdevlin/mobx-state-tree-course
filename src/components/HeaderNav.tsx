@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 import { useMst } from "../store";
 
-const HeaderNav = () => {
+/* observer converts components into reactive components*/
+const HeaderNav = observer(() => {
   const { antiHeroStore, heroStore } = useMst();
 
   return (
@@ -35,7 +37,7 @@ const HeaderNav = () => {
           Total anti-heroes: {antiHeroStore.totalAntiHeroesCount}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
-          Last Edited Hero: {heroStore.hero.firstName}
+          s Last Edited Hero: {heroStore.hero.firstName}
         </span>
         <span className="me-5" style={{ color: "purple" }}>
           Last Edited AntiHero: {antiHeroStore.antiHero.firstName}
@@ -43,5 +45,5 @@ const HeaderNav = () => {
       </div>
     </nav>
   );
-};
+});
 export default HeaderNav;

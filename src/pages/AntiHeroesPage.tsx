@@ -19,7 +19,7 @@ const AntiHeroesPage = observer(() => {
 
   useEffect(() => {
     fetchAntiHeroes();
-  }, []); // empty array needed here
+  }, []);
 
   const fetchAntiHeroes = async () => {
     await antiHeroStore.getAntiHeroesAction();
