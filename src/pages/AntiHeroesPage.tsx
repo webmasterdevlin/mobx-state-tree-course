@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useMst } from "../store";
+import FormSubmission from "../components/FormSubmission";
+import { AntiHeroType } from "../features/antiHeroes/antiHeroType";
 
-/* observer converts component into reactive component*/
-const AntiHeroesPage = () => {
+/* observer converts components into reactive components*/
+const AntiHeroesPage = observer(() => {
   const { antiHeroStore } = useMst();
-  /* Don't destructure. MobX observable are objects (and derives) only. When destructuring, any primitive variables will remain at latest values and won't be observable anymore. Use boxed observables to track primitive values exclusively or preferably pass a whole state object around.
-example:
-const {antiHeroes, antiHero, getAntiHeroes} = useContext(antiHeroContext);
-*/
+
   const [editingTracker, setEditingTracker] = useState("0");
+  const [antiHeroValues, setAntiHeroValues] = useState<AntiHeroType>({
+    id: "",
+    firstName: "",
+    lastName: "",
+    house: "",
+    knownAs: "",
+  });
 
   useEffect(() => {
     fetchAntiHeroes();
@@ -19,68 +25,112 @@ const {antiHeroes, antiHero, getAntiHeroes} = useContext(antiHeroContext);
     await antiHeroStore.getAntiHeroesAction();
   };
 
-  const handleRemoveItem = (id, name) => {
-    const isConfirmed = window.confirm(`Delete ${name}?`);
+  const handleRemoveItem = (antiHero: AntiHeroType) => {
+    const isConfirmed = window.confirm(`Delete ${antiHero.firstName}?`);
     if (!isConfirmed) return;
+
+    antiHeroStore.deleteAntiHeroAction(antiHero);
   };
 
   return (
     <div className="mb-5">
       <div className="container-fluid mb-4">
         <h4>Anti Heroes Page</h4>
-        <div className="d-flex flex-row justify-content-start">
-          <h2>Create Form</h2>
-        </div>
+        {editingTracker === "0" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
+            <FormSubmission
+              text={"Create"}
+              obj={antiHeroValues}
+              handleSubmit={antiHeroStore.postAntiHeroAction}
+            />
+          </div>
+        )}
       </div>
       <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
+        {antiHeroStore.loading ? (
           <div
-            className="spinner-border"
-            style={{ width: " 6rem", height: "6rem", color: "purple" }}
-            role="status"
-          />
-        </div>
-        <div style={{ width: "auto" }}>
-          <div className="card mt-3">
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
             <div
-              className="card-header"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-              }}
-            >
-              <h2>Update Form</h2>
-            </div>
-            <div className="card-header">
-              <h3 className="card-title">firstName lastName</h3>
-              <h5 className="card-subtitle mb-2 text-muted">house</h5>
-              <p className="card-text">knownAs</p>
-            </div>
-            <section className="card-body">
-              <div>
-                <button className="btn btn-info card-link col text-center">
-                  Cancel
-                </button>
-
-                <button className="btn btn-primary card-link col text-center">
-                  Edit
-                </button>
-
-                <button className="btn btn-outline-danger card-link col text-center">
-                  Delete
-                </button>
-              </div>
-            </section>
+              className="spinner-border"
+              style={{ width: " 6rem", height: "6rem", color: "purple" }}
+              role="status"
+            />
           </div>
-        </div>
+        ) : (
+          <div style={{ width: "auto" }}>
+            {antiHeroStore.antiHeroes.map((ah) => (
+              <div key={ah.id} className="card mt-3">
+                {editingTracker === ah.id ? (
+                  <div
+                    className="card-header"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <FormSubmission
+                      text={"Update"}
+                      obj={ah}
+                      handleSubmit={antiHeroStore.putAntiHeroAction}
+                    />
+                  </div>
+                ) : (
+                  <div className="card-header">
+                    <h3 className="card-title">
+                      {ah.firstName} {ah.lastName}
+                    </h3>
+                    <h5 className="card-subtitle mb-2 text-muted">
+                      {ah.house}
+                    </h5>
+                    <p className="card-text">{ah.knownAs}</p>
+                  </div>
+                )}
+                <section className="card-body">
+                  <div>
+                    {editingTracker === ah.id ? (
+                      <button
+                        className="btn btn-info card-link col text-center"
+                        onClick={() => {
+                          setEditingTracker("0");
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-primary card-link col text-center"
+                        onClick={() => {
+                          antiHeroStore.setAntiHeroAction(ah);
+                          setEditingTracker(ah.id);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    )}
+                    <button
+                      className="btn btn-outline-danger card-link col text-center"
+                      onClick={() => handleRemoveItem(ah)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </section>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-};
+});
 export default AntiHeroesPage;

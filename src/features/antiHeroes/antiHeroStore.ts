@@ -1,4 +1,4 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, getSnapshot, destroy } from "mobx-state-tree";
 import {
   deleteAntiHeroAxios,
   getAntiHeroesAxios,
@@ -24,25 +24,26 @@ export const AntiHeroStore = types
   })
   .actions((self) => ({
     getAntiHeroesAction: flow(function* () {
-      // self.loading = true;
+      self.loading = true;
       try {
         self.antiHeroes = (yield getAntiHeroesAxios()).data;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
       }
-      // self.loading = false;
+      self.loading = false;
     }),
-    removeAntiHeroAction: flow(function* (id: string) {
+    deleteAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
+      const previous = getSnapshot(self.antiHeroes);
+      destroy(antiHero); // optimistic update
       try {
-        yield deleteAntiHeroAxios(id);
-        self.antiHeroes.filter((ah) => ah.id !== id);
+        yield deleteAntiHeroAxios(antiHero.id);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
       }
     }),
-    addAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
+    postAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       try {
         const data = (yield postAntiHeroAxios(antiHero)).data;
         self.antiHeroes.push(data);
@@ -51,7 +52,7 @@ export const AntiHeroStore = types
         alert("Something happened. Please try again later.");
       }
     }),
-    updateAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
+    putAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       try {
         const data = (yield putAntiHeroAxios(antiHero)).data;
       } catch (e) {
@@ -59,7 +60,12 @@ export const AntiHeroStore = types
         alert("Something happened. Please try again later.");
       }
     }),
-    selectAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
+    setAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       // self.antiHero = antiHero;
     }),
+  }))
+  .views((self) => ({
+    get totalAntiHeroesCount() {
+      return self.antiHeroes.length;
+    },
   }));
