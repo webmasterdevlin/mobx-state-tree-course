@@ -35,7 +35,7 @@ const HeroesPage = observer(() => {
   return (
     <div className="mb-5">
       <div className="container-fluid mb-4">
-        <h4>Anti Heroes Page</h4>
+        <h4>Heroes Page</h4>
         {editingTracker === "0" && (
           <div
             style={{
