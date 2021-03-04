@@ -35,7 +35,6 @@ if (data) {
 export const rootStore = initialState;
 
 onSnapshot(rootStore, (snapshot) => {
-  console.log("Snapshot: ", snapshot);
   localStorage.setItem("rootState", JSON.stringify(snapshot));
 });
 
