@@ -1,12 +1,16 @@
-import { render, screen } from "test-utils/testing-library-utils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "test-utils/testing-library-utils";
 import AntiHeroesPage from "../AntiHeroesPage";
 
 describe("Anti Heroes Page", () => {
-  test("AntiHeroesPage's title is visible", () => {
+  it("should render title", () => {
     render(<AntiHeroesPage />);
 
     const title = screen.getByRole("heading", { name: "Anti Heroes Page" });
-
     expect(title).toBeInTheDocument();
   });
 
@@ -20,10 +24,24 @@ describe("Anti Heroes Page", () => {
     expect(loading).toHaveTextContent("Loading.. Please wait..");
   });
 
-  test.skip("Mark Buttons are visible", async () => {
+  it("should render inputs", async () => {
     render(<AntiHeroesPage />);
 
-    const markButtons = screen.getByRole("button", { name: "Save Character" });
-    expect(markButtons).toBeInTheDocument();
+    const firstName: any = await screen.queryByRole("textbox", {
+      name: "First Name",
+    });
+    await waitFor(() => {
+      fireEvent.change(firstName, { target: { value: "Devlin" } });
+    });
+    expect(firstName.value).toBe("Devlin");
+  });
+
+  it("should render anti heroes", async function () {
+    render(<AntiHeroesPage />);
+
+    await waitFor(() => {
+      expect(screen.queryAllByRole("button")).toHaveLength(13);
+      expect(screen.getByText("Total anti-heroes: 6")).toBeInTheDocument();
+    });
   });
 });
