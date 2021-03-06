@@ -18,7 +18,7 @@ const AntiHeroesPage = observer(() => {
   });
 
   useEffect(() => {
-    fetchAntiHeroes()
+    fetchAntiHeroes();
   }, []);
 
   const fetchAntiHeroes = async () => {
@@ -69,7 +69,7 @@ const AntiHeroesPage = observer(() => {
         ) : (
           <div style={{ width: "auto" }}>
             {antiHeroStore.antiHeroes.map((ah) => (
-              <div key={ah.id} className="card mt-3">
+              <section key={ah.id} role={"card"} className="card mt-3">
                 {editingTracker === ah.id ? (
                   <div
                     className="card-header"
@@ -95,7 +95,7 @@ const AntiHeroesPage = observer(() => {
                     <p className="card-text">{ah.knownAs}</p>
                   </div>
                 )}
-                <section className="card-body">
+                <div className="card-body">
                   <div>
                     {editingTracker === ah.id ? (
                       <button
@@ -124,8 +124,8 @@ const AntiHeroesPage = observer(() => {
                       Delete
                     </button>
                   </div>
-                </section>
-              </div>
+                </div>
+              </section>
             ))}
           </div>
         )}

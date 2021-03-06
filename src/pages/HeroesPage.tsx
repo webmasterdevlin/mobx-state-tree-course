@@ -69,7 +69,7 @@ const HeroesPage = observer(() => {
         ) : (
           <div style={{ width: "auto" }}>
             {heroStore.heroes.map((h) => (
-              <div key={h.id} className="card mt-3">
+              <section key={h.id} role={"card"} className="card mt-3">
                 {editingTracker === h.id ? (
                   <div
                     className="card-header"
@@ -93,7 +93,7 @@ const HeroesPage = observer(() => {
                     <p className="card-text">{h.knownAs}</p>
                   </div>
                 )}
-                <section className="card-body">
+                <div className="card-body">
                   <div>
                     {editingTracker === h.id ? (
                       <button
@@ -122,8 +122,8 @@ const HeroesPage = observer(() => {
                       Delete
                     </button>
                   </div>
-                </section>
-              </div>
+                </div>
+              </section>
             ))}
           </div>
         )}
