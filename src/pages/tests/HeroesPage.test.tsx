@@ -26,7 +26,7 @@ describe("Heroes Page", () => {
     expect(firstName).toHaveValue("Gokou");
   });
 
-  it("should show exact number of heroes in main content and navigation bar", async function () {
+  it("should show exact number of heroes in main content and navigation bar", async () => {
     render(<HeroesPage />);
 
     await waitFor(() => {
