@@ -5,23 +5,22 @@ import { BrowserRouter } from "react-router-dom";
 
 import HeaderNav from "../components/HeaderNav";
 
-function render(ui, { ...renderOptions } = {}) {
-  function Wrapper({ children }) {
-    return (
-      <Provider value={rootStore}>
-        <BrowserRouter>
-          <>
-            <HeaderNav />
-            <div className="container">
-              <div className="vertical-center">{children}</div>
-            </div>
-          </>
-        </BrowserRouter>
-      </Provider>
-    );
-  }
+const render = (ui, { ...renderOptions } = {}) => {
+  const Wrapper = ({ children }) => (
+    <Provider value={rootStore}>
+      <BrowserRouter>
+        <>
+          <HeaderNav />
+          <div className="container">
+            <div className="vertical-center">{children}</div>
+          </div>
+        </>
+      </BrowserRouter>
+    </Provider>
+  );
+
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
-}
+};
 
 // re-export everything
 export * from "@testing-library/react";

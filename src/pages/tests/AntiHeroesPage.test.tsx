@@ -14,16 +14,6 @@ describe("Anti Heroes Page", () => {
     expect(title).toBeInTheDocument();
   });
 
-  test.skip("Anti heroes loading", async () => {
-    render(<AntiHeroesPage />);
-
-    const loading = screen.getByRole("heading", {
-      name: "Loading.. Please wait..",
-    });
-
-    expect(loading).toHaveTextContent("Loading.. Please wait..");
-  });
-
   it("should render inputs", async () => {
     render(<AntiHeroesPage />);
 

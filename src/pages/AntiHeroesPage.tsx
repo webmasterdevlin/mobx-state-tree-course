@@ -18,7 +18,7 @@ const AntiHeroesPage = observer(() => {
   });
 
   useEffect(() => {
-    fetchAntiHeroes();
+    fetchAntiHeroes()
   }, []);
 
   const fetchAntiHeroes = async () => {
