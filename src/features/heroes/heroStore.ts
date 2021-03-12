@@ -42,6 +42,9 @@ export const HeroStore = types
       }
       self.loading = false;
     }),
+    softDeleteHeroAction: function (hero: HeroType) {
+      destroy(hero);
+    },
     // optimistic update
     deleteHeroAction: flow(function* (hero: HeroType) {
       const previous = getSnapshot(self.heroes);

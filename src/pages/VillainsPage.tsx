@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useMst } from "store";
+import { observer } from "mobx-react-lite";
 import TitleBar from "components/TitleBar";
 import UpdateUiLabel from "components/UpdateUiLabel";
-
 import {
   Box,
   Button,
@@ -11,42 +12,61 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import FormSubmission from "components/FormSubmission";
+import { VillainType } from "features/villains/villainType";
 
-const VillainsPage = () => {
-  const loading = false;
-  const villains = [];
+const VillainsPage = observer(() => {
+  const { villainStore } = useMst();
 
-  const classes = useStyles();
   const smallScreen = useMediaQuery("(max-width:600px)");
+  const classes = useStyles();
 
   /*local state*/
   const [counter, setCounter] = useState("0");
 
+  useEffect(() => {
+    fetchVillains();
+  }, []);
+
+  const fetchVillains = async () => {
+    await villainStore.getVillainsAction();
+  };
+
+  const handleSoftDelete = (villain: VillainType) => {
+    villainStore.softDeleteVillainAction(villain);
+  };
+
+  const handleDelete = (villain: VillainType) => {
+    villainStore.deleteVillainAction(villain);
+  };
+
   return (
     <div>
-      <TitleBar title={"Super VillainsPage"} />
-      <FormSubmission />
+      <TitleBar title={"Anti HeroesPage"} />
+      <FormSubmission postAction={villainStore.postVillainAction} />
       <UpdateUiLabel />
       <>
-        {loading ? (
+        {villainStore.loading ? (
           <Typography variant={"h2"}>Loading.. Please wait..</Typography>
         ) : (
-          villains.map((v) => (
+          villainStore.villains.map((ah) => (
             <Box
-              key={v.id}
-              role={"card"}
               mb={2}
+              role={"card"}
+              key={ah.id}
               display={"flex"}
               flexDirection={smallScreen ? "column" : "row"}
               justifyContent={"space-between"}
             >
-              <Typography>
-                <span>{`${v.firstName} ${v.lastName} is ${v.knownAs}`}</span>
-                {counter === v.id && <span> - marked</span>}
-              </Typography>
+              <div>
+                <Typography>
+                  <span>{`${ah.firstName} ${ah.lastName} is ${ah.knownAs}`}</span>
+                  {counter === ah.id && <span> - marked</span>}
+                </Typography>
+              </div>
               <div>
                 <Button
                   className={classes.button}
+                  onClick={() => setCounter(ah.id)}
                   variant={"contained"}
                   color={"default"}
                 >
@@ -56,6 +76,7 @@ const VillainsPage = () => {
                   className={classes.button}
                   variant={"contained"}
                   color={"secondary"}
+                  onClick={() => handleSoftDelete(ah)}
                 >
                   Remove
                 </Button>{" "}
@@ -63,6 +84,7 @@ const VillainsPage = () => {
                   className={classes.button}
                   variant={"outlined"}
                   color={"secondary"}
+                  onClick={() => handleDelete(ah)}
                 >
                   DELETE in DB
                 </Button>
@@ -71,19 +93,18 @@ const VillainsPage = () => {
           ))
         )}
       </>
-      {villains.length === 0 && !loading && (
+      {villainStore.villains.length === 0 && !villainStore.loading && (
         <Button
           className={classes.button}
           variant={"contained"}
           color={"primary"}
-    
         >
           Re-fetch
         </Button>
       )}
     </div>
   );
-};
+});
 
 export default VillainsPage;
 

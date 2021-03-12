@@ -42,7 +42,7 @@ const AntiHeroesPage = observer(() => {
   return (
     <div>
       <TitleBar title={"Anti HeroesPage"} />
-      <FormSubmission />
+      <FormSubmission postAction={antiHeroStore.postAntiHeroAction} />
       <UpdateUiLabel />
       <>
         {antiHeroStore.loading ? (

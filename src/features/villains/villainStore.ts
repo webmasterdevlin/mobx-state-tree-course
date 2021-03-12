@@ -7,9 +7,9 @@ import {
   destroy,
   applySnapshot,
 } from "mobx-state-tree";
-import { HeroType } from "./heroType";
+import { VillainType } from "./villainType";
 
-const HeroModel = types.model({
+const VillainModel = types.model({
   id: types.identifier,
   firstName: types.string,
   lastName: types.string,
@@ -17,47 +17,50 @@ const HeroModel = types.model({
   knownAs: types.string,
 });
 
-export const HeroStore = types
+export const VillainStore = types
   .model({
-    heroes: types.array(HeroModel),
-    hero: types.maybe(HeroModel),
+    villains: types.array(VillainModel),
+    villain: types.maybe(VillainModel),
     loading: types.boolean,
     error: types.string,
   })
   .actions((self) => ({
     /*non-async actions*/
-    setHeroAction: function (hero: HeroType) {
-      self.hero = { ...hero };
+    setVillainAction: function (villain: VillainType) {
+      self.villain = { ...villain };
     },
 
     /*async actions*/
     // pessimistic update
-    getHeroesAction: flow(function* () {
+    getVillainsAction: flow(function* () {
       self.loading = true;
       try {
-        self.heroes = (yield getAxios(EndPoints.heroes)).data;
+        self.villains = (yield getAxios(EndPoints.villains)).data;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
       }
       self.loading = false;
     }),
+    softDeleteVillainAction: function (villain: VillainType) {
+      destroy(villain);
+    },
     // optimistic update
-    deleteHeroAction: flow(function* (hero: HeroType) {
-      const previous = getSnapshot(self.heroes);
-      destroy(hero);
+    deleteVillainAction: flow(function* (villain: VillainType) {
+      const previous = getSnapshot(self.villains);
+      destroy(villain);
       try {
-        yield deleteAxios(EndPoints.heroes, hero.id);
+        yield deleteAxios(EndPoints.villains, villain.id);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
-        applySnapshot(self.heroes, previous);
+        applySnapshot(self.villains, previous);
       }
     }),
-    postHeroAction: flow(function* (hero: HeroType) {
+    postVillainAction: flow(function* (villain: VillainType) {
       try {
-        const data = (yield postAxios(EndPoints.heroes, hero)).data;
-        self.heroes.push(data);
+        const data = (yield postAxios(EndPoints.villains, villain)).data;
+        self.villains.push(data);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
@@ -66,7 +69,7 @@ export const HeroStore = types
   }))
   .views((self) => ({
     /*computed or derived values*/
-    get totalHeroesCount() {
-      return self.heroes.length;
+    get totalVillainsCount() {
+      return self.villains.length;
     },
   }));

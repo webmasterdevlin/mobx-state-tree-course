@@ -1,4 +1,4 @@
-export type HeroType = {
+export type VillainType = {
   id: string;
   firstName: string;
   lastName: string;

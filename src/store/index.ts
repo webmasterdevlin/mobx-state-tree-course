@@ -3,10 +3,12 @@ import { types, Instance, onSnapshot } from "mobx-state-tree";
 import { AntiHeroStore } from "features/antiHeroes/antiHeroStore";
 import { HeroStore } from "features/heroes/heroStore";
 import { basicInfo } from "./initialStates";
+import { VillainStore } from "../features/villains/villainStore";
 
 const RootModel = types.model({
   antiHeroStore: AntiHeroStore,
   heroStore: HeroStore,
+  villainStore: VillainStore,
 });
 
 let initialState = RootModel.create({
@@ -19,6 +21,12 @@ let initialState = RootModel.create({
   heroStore: {
     heroes: [],
     hero: basicInfo,
+    loading: false,
+    error: "",
+  },
+  villainStore: {
+    villains: [],
+    villain: basicInfo,
     loading: false,
     error: "",
   },
