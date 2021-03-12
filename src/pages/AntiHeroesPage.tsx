@@ -1,136 +1,101 @@
 import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
-import { useMst } from "store";
+
+import TitleBar from "components/TitleBar";
+import UpdateUiLabel from "components/UpdateUiLabel";
+import {
+  Box,
+  Button,
+  createStyles,
+  Typography,
+  useMediaQuery,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import FormSubmission from "components/FormSubmission";
-import { AntiHeroType } from "features/antiHeroes/antiHeroType";
 
-/* observer converts components into reactive components*/
-const AntiHeroesPage = observer(() => {
-  const { antiHeroStore } = useMst();
+const AntiHeroesPage = () => {
+  const loading = false;
+  const antiHeroes = [];
 
-  const [editingTracker, setEditingTracker] = useState("0");
-  const [antiHeroValues, setAntiHeroValues] = useState<AntiHeroType>({
-    id: "",
-    firstName: "",
-    lastName: "",
-    house: "",
-    knownAs: "",
-  });
+  const smallScreen = useMediaQuery("(max-width:600px)");
+  const classes = useStyles();
 
-  useEffect(() => {
-    fetchAntiHeroes();
-  }, []);
-
-  const fetchAntiHeroes = async () => {
-    await antiHeroStore.getAntiHeroesAction();
-  };
-
-  const handleRemoveItem = (antiHero: AntiHeroType) => {
-    const isConfirmed = window.confirm(`Delete ${antiHero.firstName}?`);
-    if (!isConfirmed) return;
-
-    antiHeroStore.deleteAntiHeroAction(antiHero);
-  };
+  /*local state*/
+  const [counter, setCounter] = useState("0");
 
   return (
-    <div className="mb-5">
-      <div className="container-fluid mb-4">
-        <h4>Anti Heroes Page</h4>
-        {editingTracker === "0" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
-          >
-            <FormSubmission
-              text={"Create"}
-              obj={antiHeroValues}
-              handleSubmit={antiHeroStore.postAntiHeroAction}
-            />
-          </div>
-        )}
-      </div>
-      <div>
-        {antiHeroStore.loading ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              className="spinner-border"
-              style={{ width: " 6rem", height: "6rem", color: "purple" }}
-              role="status"
-            />
-          </div>
+    <div>
+      <TitleBar title={"Anti HeroesPage"} />
+      <FormSubmission  />
+      <UpdateUiLabel />
+      <>
+        {loading ? (
+          <Typography variant={"h2"}>Loading.. Please wait..</Typography>
         ) : (
-          <div style={{ width: "auto" }}>
-            {antiHeroStore.antiHeroes.map((ah) => (
-              <section key={ah.id} role={"card"} className="card mt-3">
-                {editingTracker === ah.id ? (
-                  <div
-                    className="card-header"
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <FormSubmission
-                      text={"Update"}
-                      obj={ah}
-                      handleSubmit={antiHeroStore.putAntiHeroAction}
-                    />
-                  </div>
-                ) : (
-                  <div className="card-header">
-                    <h3 className="card-title">
-                      {ah.firstName} {ah.lastName}
-                    </h3>
-                    <h5 className="card-subtitle mb-2 text-muted">
-                      {ah.house}
-                    </h5>
-                    <p className="card-text">{ah.knownAs}</p>
-                  </div>
-                )}
-                <div className="card-body">
-                  <div>
-                    {editingTracker === ah.id ? (
-                      <button
-                        className="btn btn-info card-link col text-center"
-                        onClick={() => {
-                          setEditingTracker("0");
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-primary card-link col text-center"
-                        onClick={() => {
-                          antiHeroStore.setAntiHeroAction(ah);
-                          setEditingTracker(ah.id);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    )}
-                    <button
-                      className="btn btn-outline-danger card-link col text-center"
-                      onClick={() => handleRemoveItem(ah)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </section>
-            ))}
-          </div>
+          antiHeroes.map((ah) => (
+            <Box
+              mb={2}
+              role={"card"}
+              key={ah.id}
+              display={"flex"}
+              flexDirection={smallScreen ? "column" : "row"}
+              justifyContent={"space-between"}
+            >
+              <div>
+                <Typography>
+                  <span>{`${ah.firstName} ${ah.lastName} is ${ah.knownAs}`}</span>
+                  {counter === ah.id && <span> - marked</span>}
+                </Typography>
+              </div>
+              <div>
+                <Button
+                  className={classes.button}
+                  onClick={() => setCounter(ah.id)}
+                  variant={"contained"}
+                  color={"default"}
+                >
+                  Mark
+                </Button>{" "}
+                <Button
+                  className={classes.button}
+                  variant={"contained"}
+                  color={"secondary"}
+                >
+                  Remove
+                </Button>{" "}
+                <Button
+                  className={classes.button}
+                  variant={"outlined"}
+                  color={"secondary"}
+                >
+                  DELETE in DB
+                </Button>
+              </div>
+            </Box>
+          ))
         )}
-      </div>
+      </>
+      {antiHeroes.length === 0 && !loading && (
+        <Button
+          className={classes.button}
+          variant={"contained"}
+          color={"primary"}
+        >
+          Re-fetch
+        </Button>
+      )}
     </div>
   );
-});
+};
+
 export default AntiHeroesPage;
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    button: {
+      margin: "0 0.5rem",
+      "&:focus": {
+        outline: "none",
+      },
+    },
+  })
+);

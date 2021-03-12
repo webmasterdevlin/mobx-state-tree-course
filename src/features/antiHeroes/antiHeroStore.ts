@@ -1,3 +1,5 @@
+import { EndPoints } from "axios/api-config";
+import { deleteAxios, getAxios, postAxios } from "axios/generic-api-calls";
 import {
   types,
   flow,
@@ -5,12 +7,6 @@ import {
   destroy,
   applySnapshot,
 } from "mobx-state-tree";
-import {
-  deleteAntiHeroAxios,
-  getAntiHeroesAxios,
-  postAntiHeroAxios,
-  putAntiHeroAxios,
-} from "./antiHeroService";
 import { AntiHeroType } from "./antiHeroType";
 
 const AntiHeroModel = types.model({
@@ -38,7 +34,9 @@ export const AntiHeroStore = types
     getAntiHeroesAction: flow(function* () {
       self.loading = true;
       try {
-        self.antiHeroes = (yield getAntiHeroesAxios()).data;
+        self.antiHeroes = (yield getAxios<AntiHeroType[]>(
+          EndPoints.antiHeroes
+        )).data;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
@@ -50,7 +48,7 @@ export const AntiHeroStore = types
       const previous = getSnapshot(self.antiHeroes);
       destroy(antiHero);
       try {
-        yield deleteAntiHeroAxios(antiHero.id);
+        yield deleteAxios(EndPoints.antiHeroes, antiHero.id);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
@@ -59,18 +57,8 @@ export const AntiHeroStore = types
     }),
     postAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       try {
-        const data = (yield postAntiHeroAxios(antiHero)).data;
+        const data = (yield postAxios(EndPoints.antiHeroes, antiHero)).data;
         self.antiHeroes.push(data);
-      } catch (e) {
-        console.log(e);
-        alert("Something happened. Please try again later.");
-      }
-    }),
-    putAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
-      try {
-        yield putAntiHeroAxios(antiHero);
-        const index = self.antiHeroes.findIndex((ah) => ah.id == antiHero.id);
-        self.antiHeroes[index] = antiHero;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");

@@ -1,3 +1,5 @@
+import { EndPoints } from "axios/api-config";
+import { deleteAxios, getAxios, postAxios } from "axios/generic-api-calls";
 import {
   types,
   flow,
@@ -5,12 +7,6 @@ import {
   destroy,
   applySnapshot,
 } from "mobx-state-tree";
-import {
-  deleteHeroAxios,
-  getHeroesAxios,
-  postHeroAxios,
-  putHeroAxios,
-} from "./heroService";
 import { HeroType } from "./heroType";
 
 const HeroModel = types.model({
@@ -39,7 +35,7 @@ export const HeroStore = types
     getHeroesAction: flow(function* () {
       self.loading = true;
       try {
-        self.heroes = (yield getHeroesAxios()).data;
+        self.heroes = (yield getAxios(EndPoints.heroes)).data;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
@@ -51,7 +47,7 @@ export const HeroStore = types
       const previous = getSnapshot(self.heroes);
       destroy(hero);
       try {
-        yield deleteHeroAxios(hero.id);
+        yield deleteAxios(EndPoints.heroes, hero.id);
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
@@ -60,18 +56,8 @@ export const HeroStore = types
     }),
     postHeroAction: flow(function* (hero: HeroType) {
       try {
-        const data = (yield postHeroAxios(hero)).data;
+        const data = (yield postAxios(EndPoints.heroes, hero)).data;
         self.heroes.push(data);
-      } catch (e) {
-        console.log(e);
-        alert("Something happened. Please try again later.");
-      }
-    }),
-    putHeroAction: flow(function* (hero: HeroType) {
-      try {
-        yield putHeroAxios(hero);
-        const index = self.heroes.findIndex((ah) => ah.id == hero.id);
-        self.heroes[index] = hero;
       } catch (e) {
         console.log(e);
         alert("Something happened. Please try again later.");
