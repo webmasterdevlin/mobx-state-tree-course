@@ -24,20 +24,8 @@ const AntiHeroesPage = observer(() => {
   const [counter, setCounter] = useState("0");
 
   useEffect(() => {
-    fetchAntiHeroes();
+    antiHeroStore.getAntiHeroesAction();
   }, []);
-
-  const fetchAntiHeroes = async () => {
-    await antiHeroStore.getAntiHeroesAction();
-  };
-
-  const handleSoftDelete = (antiHero: AntiHeroType) => {
-    antiHeroStore.softDeleteAntiHeroAction(antiHero);
-  };
-
-  const handleDelete = (antiHero: AntiHeroType) => {
-    antiHeroStore.deleteAntiHeroAction(antiHero);
-  };
 
   return (
     <div>
@@ -76,7 +64,7 @@ const AntiHeroesPage = observer(() => {
                   className={classes.button}
                   variant={"contained"}
                   color={"secondary"}
-                  onClick={() => handleSoftDelete(ah)}
+                  onClick={() => antiHeroStore.softDeleteAntiHeroAction(ah)}
                 >
                   Remove
                 </Button>{" "}
@@ -84,7 +72,7 @@ const AntiHeroesPage = observer(() => {
                   className={classes.button}
                   variant={"outlined"}
                   color={"secondary"}
-                  onClick={() => handleDelete(ah)}
+                  onClick={() => antiHeroStore.deleteAntiHeroAction(ah)}
                 >
                   DELETE in DB
                 </Button>
@@ -98,6 +86,7 @@ const AntiHeroesPage = observer(() => {
           className={classes.button}
           variant={"contained"}
           color={"primary"}
+          onClick={antiHeroStore.getAntiHeroesAction}
         >
           Re-fetch
         </Button>
