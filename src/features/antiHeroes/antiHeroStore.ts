@@ -43,6 +43,9 @@ export const AntiHeroStore = types
       }
       self.loading = false;
     }),
+    softDeleteAntiHeroAction: function (antiHero: AntiHeroType) {
+      destroy(antiHero);
+    },
     // optimistic update
     deleteAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       const previous = getSnapshot(self.antiHeroes);
