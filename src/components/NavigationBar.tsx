@@ -1,11 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useMst } from "store";
 import { AppBar, Box, Button, createStyles, Toolbar } from "@material-ui/core";
 import TotalOfCharacters from "./TotalOfCharacters";
 import { makeStyles } from "@material-ui/styles";
 
-const NavigationBar = () => {
-
+const NavigationBar = observer(() => {
+  const { antiHeroStore, heroStore, villainStore } = useMst();
   const history = useHistory();
   const classes = useStyles();
   return (
@@ -29,7 +31,7 @@ const NavigationBar = () => {
             Anti Heroes
           </Button>
           <TotalOfCharacters
-            collection={[]}
+            total={antiHeroStore.totalAntiHeroesCount}
             role={"total-anti-heroes"}
           />
         </Box>
@@ -42,7 +44,7 @@ const NavigationBar = () => {
             Heroes
           </Button>
           <TotalOfCharacters
-            collection={[]}
+            total={heroStore.totalHeroesCount}
             role={"total-heroes"}
           />
         </Box>
@@ -55,14 +57,14 @@ const NavigationBar = () => {
             Villains
           </Button>
           <TotalOfCharacters
-            collection={[]}
+            total={villainStore.totalVillainsCount}
             role={"total-villains"}
           />
         </Box>
       </Toolbar>
     </AppBar>
   );
-};
+});
 
 export default NavigationBar;
 
