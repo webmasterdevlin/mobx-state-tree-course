@@ -14,7 +14,7 @@ const HomePage = () => {
         alignItems={"center"}
       >
         <Typography variant={"h2"}>
-          Welcome to Mobx State Tree 🧑‍🏫 💻
+          Welcome to Mobx State Tree Course 🧑‍🏫 💻
         </Typography>
       </Box>
     </Container>

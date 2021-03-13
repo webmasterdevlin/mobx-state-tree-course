@@ -9,7 +9,7 @@ $ npm run start:fullstack
 
 The React app, and the fake web service will run concurrently.
 
-![screenshot](./screenshot-reactjs.png)
+![screenshot](./screenshot.png)
 
 ### Best practices in writing tests
 
