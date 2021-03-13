@@ -26,25 +26,22 @@ export const AntiHeroStore = types
   })
   .actions((self) => ({
     /*non-async actions*/
-    setAntiHeroAction: function (antiHero: AntiHeroType) {
-      self.antiHero = { ...antiHero };
+    softDeleteAntiHeroAction: function (antiHero: AntiHeroType) {
+      destroy(antiHero);
     },
+
     /*async actions*/
     // pessimistic update
     getAntiHeroesAction: flow(function* () {
       self.loading = true;
       try {
-        self.antiHeroes = (yield getAxios<AntiHeroType[]>(
-          EndPoints.antiHeroes
-        )).data;
+        const { data } = yield getAxios<AntiHeroType[]>(EndPoints.antiHeroes);
+        self.antiHeroes = data;
       } catch (e) {
         alert("Something happened. Please try again later.");
       }
       self.loading = false;
     }),
-    softDeleteAntiHeroAction: function (antiHero: AntiHeroType) {
-      destroy(antiHero);
-    },
 
     /*
      optimistic update

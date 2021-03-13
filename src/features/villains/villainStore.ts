@@ -26,8 +26,8 @@ export const VillainStore = types
   })
   .actions((self) => ({
     /*non-async actions*/
-    setVillainAction: function (villain: VillainType) {
-      self.villain = { ...villain };
+    softDeleteVillainAction: function (villain: VillainType) {
+      destroy(villain);
     },
 
     /*async actions*/
@@ -41,9 +41,7 @@ export const VillainStore = types
       }
       self.loading = false;
     }),
-    softDeleteVillainAction: function (villain: VillainType) {
-      destroy(villain);
-    },
+
     /*
      optimistic update
      In tests, console.warn will appear but ignore it.

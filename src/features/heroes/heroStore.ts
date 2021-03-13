@@ -26,8 +26,8 @@ export const HeroStore = types
   })
   .actions((self) => ({
     /*non-async actions*/
-    setHeroAction: function (hero: HeroType) {
-      self.hero = { ...hero };
+    softDeleteHeroAction: function (hero: HeroType) {
+      destroy(hero);
     },
 
     /*async actions*/
@@ -41,9 +41,6 @@ export const HeroStore = types
       }
       self.loading = false;
     }),
-    softDeleteHeroAction: function (hero: HeroType) {
-      destroy(hero);
-    },
 
     /*
      optimistic update
