@@ -4,6 +4,7 @@ import { AntiHeroStore } from "features/antiHeroes/antiHeroStore";
 import { HeroStore } from "features/heroes/heroStore";
 import { basicInfo } from "./initialStates";
 import { VillainStore } from "../features/villains/villainStore";
+import makeInspectable from "mobx-devtools-mst";
 
 const RootModel = types.model({
   antiHeroStore: AntiHeroStore,
@@ -57,5 +58,6 @@ export function useMst() {
   if (store === null)
     throw new Error("Store cannot be null, please add a context provider");
 
+  makeInspectable(store);
   return store;
 }
