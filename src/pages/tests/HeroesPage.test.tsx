@@ -83,7 +83,7 @@ describe("Anti Heroes Page", () => {
       name: "DELETE in DB",
     });
     userEvent.click(buttons[0]);
-    expect(screen.getByRole("card")).toBeInTheDocument();
+    expect(await screen.findByRole("card")).toBeInTheDocument();
     expect(screen.getByRole("total-heroes")).toHaveTextContent("1");
   });
 

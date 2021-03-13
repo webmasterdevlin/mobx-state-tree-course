@@ -45,7 +45,12 @@ export const AntiHeroStore = types
     softDeleteAntiHeroAction: function (antiHero: AntiHeroType) {
       destroy(antiHero);
     },
-    // optimistic update
+
+    /*
+     optimistic update
+     In tests, console.warn will appear but ignore it.
+     Error: [mobx-state-tree] You are trying to read or write to an object that is no longer part of a state tree.
+   */
     deleteAntiHeroAction: flow(function* (antiHero: AntiHeroType) {
       const previous = getSnapshot(self.antiHeroes);
       destroy(antiHero);

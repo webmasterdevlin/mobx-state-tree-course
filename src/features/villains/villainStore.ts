@@ -44,7 +44,11 @@ export const VillainStore = types
     softDeleteVillainAction: function (villain: VillainType) {
       destroy(villain);
     },
-    // optimistic update
+    /*
+     optimistic update
+     In tests, console.warn will appear but ignore it.
+     Error: [mobx-state-tree] You are trying to read or write to an object that is no longer part of a state tree.
+   */
     deleteVillainAction: flow(function* (villain: VillainType) {
       const previous = getSnapshot(self.villains);
       destroy(villain);
