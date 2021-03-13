@@ -32,8 +32,6 @@ export const antiHeroHandler = [
   }),
 
   rest.put("http://localhost:5000/anti-heroes/:id", (req, res, ctx) => {
-    console.log("ID:", req.params.id);
-
     return data.find((ah) => ah.id === req.params.id)
       ? res(ctx.status(200))
       : res(ctx.status(404));

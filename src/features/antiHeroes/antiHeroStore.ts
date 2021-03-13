@@ -38,7 +38,6 @@ export const AntiHeroStore = types
           EndPoints.antiHeroes
         )).data;
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
       self.loading = false;
@@ -53,7 +52,6 @@ export const AntiHeroStore = types
       try {
         yield deleteAxios(EndPoints.antiHeroes, antiHero.id);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
         applySnapshot(self.antiHeroes, previous);
       }
@@ -63,7 +61,6 @@ export const AntiHeroStore = types
         const data = (yield postAxios(EndPoints.antiHeroes, antiHero)).data;
         self.antiHeroes.push(data);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
     }),

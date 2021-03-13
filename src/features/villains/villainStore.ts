@@ -37,7 +37,6 @@ export const VillainStore = types
       try {
         self.villains = (yield getAxios(EndPoints.villains)).data;
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
       self.loading = false;
@@ -52,7 +51,6 @@ export const VillainStore = types
       try {
         yield deleteAxios(EndPoints.villains, villain.id);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
         applySnapshot(self.villains, previous);
       }
@@ -62,7 +60,6 @@ export const VillainStore = types
         const data = (yield postAxios(EndPoints.villains, villain)).data;
         self.villains.push(data);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
     }),

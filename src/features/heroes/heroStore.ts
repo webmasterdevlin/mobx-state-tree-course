@@ -37,7 +37,6 @@ export const HeroStore = types
       try {
         self.heroes = (yield getAxios(EndPoints.heroes)).data;
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
       self.loading = false;
@@ -52,7 +51,6 @@ export const HeroStore = types
       try {
         yield deleteAxios(EndPoints.heroes, hero.id);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
         applySnapshot(self.heroes, previous);
       }
@@ -62,7 +60,6 @@ export const HeroStore = types
         const data = (yield postAxios(EndPoints.heroes, hero)).data;
         self.heroes.push(data);
       } catch (e) {
-        console.log(e);
         alert("Something happened. Please try again later.");
       }
     }),
