@@ -17,19 +17,16 @@ let initialState = RootModel.create({
     antiHeroes: [],
     antiHero: basicInfo,
     loading: false,
-    error: "",
   },
   heroStore: {
     heroes: [],
     hero: basicInfo,
     loading: false,
-    error: "",
   },
   villainStore: {
     villains: [],
     villain: basicInfo,
     loading: false,
-    error: "",
   },
 });
 

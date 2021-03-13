@@ -22,7 +22,6 @@ export const AntiHeroStore = types
     antiHeroes: types.array(AntiHeroModel),
     antiHero: types.maybe(AntiHeroModel),
     loading: types.boolean,
-    error: types.string,
   })
   .actions((self) => ({
     /*non-async actions*/

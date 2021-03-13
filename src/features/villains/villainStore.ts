@@ -22,7 +22,6 @@ export const VillainStore = types
     villains: types.array(VillainModel),
     villain: types.maybe(VillainModel),
     loading: types.boolean,
-    error: types.string,
   })
   .actions((self) => ({
     /*non-async actions*/
@@ -35,7 +34,8 @@ export const VillainStore = types
     getVillainsAction: flow(function* () {
       self.loading = true;
       try {
-        self.villains = (yield getAxios(EndPoints.villains)).data;
+        const { data } = yield getAxios(EndPoints.villains);
+        self.villains = data;
       } catch (e) {
         alert("Something happened. Please try again later.");
       }

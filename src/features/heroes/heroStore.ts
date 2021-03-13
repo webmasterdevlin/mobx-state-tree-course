@@ -22,7 +22,6 @@ export const HeroStore = types
     heroes: types.array(HeroModel),
     hero: types.maybe(HeroModel),
     loading: types.boolean,
-    error: types.string,
   })
   .actions((self) => ({
     /*non-async actions*/
@@ -35,7 +34,8 @@ export const HeroStore = types
     getHeroesAction: flow(function* () {
       self.loading = true;
       try {
-        self.heroes = (yield getAxios(EndPoints.heroes)).data;
+        const { data } = yield getAxios(EndPoints.heroes);
+        self.heroes = data;
       } catch (e) {
         alert("Something happened. Please try again later.");
       }
