@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import FormSubmission from "components/FormSubmission";
-import { HeroType } from "features/heroes/heroType";
 
 const HeroesPage = observer(() => {
   const { heroStore } = useMst();
@@ -29,7 +28,7 @@ const HeroesPage = observer(() => {
 
   return (
     <div>
-      <TitleBar title={"Anti HeroesPage"} />
+      <TitleBar title={"Super Heroes Page"} />
       <FormSubmission postAction={heroStore.postHeroAction} />
       <UpdateUiLabel />
       <>
