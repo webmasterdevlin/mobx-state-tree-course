@@ -2,13 +2,12 @@ import React from "react";
 
 type Props = {
   total: number;
-  role: string;
+  dataTestId: string;
 };
 
-const TotalOfCharacters = ({ total, role }: Props) => (
-  <span role={role} style={{ color: "cyan", margin: "0 1rem" }}>
+const TotalOfCharacters = ({ total, dataTestId }: Props) => (
+  <span data-testid={dataTestId} style={{ color: "cyan", margin: "0 1rem" }}>
     {total}
   </span>
 );
-
 export default TotalOfCharacters;
