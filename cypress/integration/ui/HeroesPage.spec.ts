@@ -20,7 +20,7 @@ describe("Heroes Page", () => {
     // using cypress testing library utilities demo
     it("should marked a hero after clicking a mark button", () => {
       const index = 1;
-      cy.findAllByTestId("mark-button").eq(1).click();
+      cy.findAllByTestId("mark-button").eq(index).click();
       cy.findAllByTestId("card").should("contain", "- marked");
     });
 
