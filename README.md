@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3ce810dd-9952-4643-b046-6cab2fdaac66/deploy-status)](https://app.netlify.com/sites/upbeat-shaw-a043b7/deploys)
+
 # Mobx State Tree Course
 
 ```zsh
